@@ -1,0 +1,652 @@
+openapi: 3.0.3
+info:
+  title: Miranda Shop
+  version: 1.0.0
+paths:
+  /api/order/:
+    get:
+      operationId: api_order_list
+      description: |-
+        Возвращает набор данных заказов в зависимости от пользователя.
+
+            Если пользователь не авторизован, возбуждает исключение PermissionDenied.
+            Если пользователь не является администратором, возвращает заказы, связанные с этим пользователем.
+            Если пользователь является администратором, возвращает все заказы.
+
+        Создает заказ, связывая его с текущим пользователем.
+
+            Если пользователь не авторизован, возбуждает исключение PermissionDenied.
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - Order
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOrderList'
+          description: ''
+    post:
+      operationId: api_order_create
+      description: |-
+        Возвращает набор данных заказов в зависимости от пользователя.
+
+            Если пользователь не авторизован, возбуждает исключение PermissionDenied.
+            Если пользователь не является администратором, возвращает заказы, связанные с этим пользователем.
+            Если пользователь является администратором, возвращает все заказы.
+
+        Создает заказ, связывая его с текущим пользователем.
+
+            Если пользователь не авторизован, возбуждает исключение PermissionDenied.
+      tags:
+      - Order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/product/:
+    get:
+      operationId: api_product_list
+      description: |-
+        API для создания и получения списка продуктов.
+
+        Позволяет создавать новые продукты и получать список существующих продуктов.
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - Product
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProductList'
+          description: ''
+    post:
+      operationId: api_product_create
+      description: |-
+        API для создания и получения списка продуктов.
+
+        Позволяет создавать новые продукты и получать список существующих продуктов.
+      tags:
+      - Product
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+  /api/product/{id}/:
+    get:
+      operationId: api_product_retrieve
+      description: |-
+        API для получения, обновления и удаления конкретного продукта.
+
+        Позволяет получать, обновлять и удалять информацию о конкретном продукте.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Product
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    put:
+      operationId: api_product_update
+      description: |-
+        API для получения, обновления и удаления конкретного продукта.
+
+        Позволяет получать, обновлять и удалять информацию о конкретном продукте.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    patch:
+      operationId: api_product_partial_update
+      description: |-
+        API для получения, обновления и удаления конкретного продукта.
+
+        Позволяет получать, обновлять и удалять информацию о конкретном продукте.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    delete:
+      operationId: api_product_destroy
+      description: |-
+        API для получения, обновления и удаления конкретного продукта.
+
+        Позволяет получать, обновлять и удалять информацию о конкретном продукте.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Product
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/user/:
+    get:
+      operationId: api_user_list
+      description: |-
+        Предоставляет API для получения списка пользователей.
+
+        Возвращает список всех пользователей.
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - User
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+  /api/user/{id}/:
+    get:
+      operationId: api_user_retrieve
+      description: |-
+        Предоставляет API для получения информации о конкретном пользователе.
+
+        Позволяет получать информацию о конкретном пользователе по его идентификатору.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - User
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/user/login/:
+    post:
+      operationId: api_user_login_create
+      description: |-
+        Вход пользователя.
+
+        Проверяет учетные данные пользователя и выполняет вход.
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+          description: ''
+  /api/user/logout/:
+    post:
+      operationId: api_user_logout_create
+      description: |-
+        Выход пользователя.
+
+        Выполняет выход пользователя из системы.
+      tags:
+      - User
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/user/me/:
+    get:
+      operationId: api_user_me_retrieve
+      description: |-
+        Предоставляет API для получения информации о текущем пользователе.
+
+        Позволяет получать информацию о текущем авторизованном пользователе.
+      tags:
+      - User
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/user/new/:
+    post:
+      operationId: api_user_new_create
+      description: |-
+        Создает нового пользователя.
+
+        Создает нового пользователя с уникальным именем и сохраняет его в базе данных.
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+components:
+  schemas:
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+      - password
+      - username
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user_data:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        product:
+          type: integer
+        product_data:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        item_price:
+          type: number
+          format: double
+          readOnly: true
+        total_price:
+          type: number
+          format: double
+          readOnly: true
+      required:
+      - id
+      - item_price
+      - product
+      - product_data
+      - total_price
+      - user_data
+    PaginatedOrderList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+    PaginatedProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    PatchedProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 250
+        category:
+          type: string
+          nullable: true
+          maxLength: 250
+        child_category:
+          type: string
+          nullable: true
+          maxLength: 250
+        product_style:
+          type: string
+          nullable: true
+          maxLength: 250
+        barcode:
+          type: string
+          nullable: true
+          maxLength: 250
+        stock:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        price:
+          type: number
+          format: double
+        discount:
+          type: number
+          format: double
+        sale_price:
+          type: number
+          format: double
+          readOnly: true
+        size:
+          type: string
+          nullable: true
+          maxLength: 50
+        color:
+          type: string
+          nullable: true
+          maxLength: 50
+        images:
+          type: array
+          items: {}
+          readOnly: true
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 250
+        category:
+          type: string
+          nullable: true
+          maxLength: 250
+        child_category:
+          type: string
+          nullable: true
+          maxLength: 250
+        product_style:
+          type: string
+          nullable: true
+          maxLength: 250
+        barcode:
+          type: string
+          nullable: true
+          maxLength: 250
+        stock:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        price:
+          type: number
+          format: double
+        discount:
+          type: number
+          format: double
+        sale_price:
+          type: number
+          format: double
+          readOnly: true
+        size:
+          type: string
+          nullable: true
+          maxLength: 50
+        color:
+          type: string
+          nullable: true
+          maxLength: 50
+        images:
+          type: array
+          items: {}
+          readOnly: true
+      required:
+      - id
+      - images
+      - sale_price
+      - title
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          default: username
+          maxLength: 15
+        password:
+          type: string
+          writeOnly: true
+          default: '12345678'
+          minLength: 8
+        city:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        is_staff:
+          type: boolean
+          readOnly: true
+      required:
+      - id
+      - is_staff
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
