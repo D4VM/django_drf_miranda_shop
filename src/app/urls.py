@@ -38,7 +38,8 @@ urlpatterns = [
 
     # DRF-Spectacular
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/', SpectacularSwaggerView.as_view(url_name='schema', permission_classes=[IsAdminUser]), name='swagger-ui'),
+    # path('api/', SpectacularSwaggerView.as_view(url_name='schema', permission_classes=[IsAdminUser]), name='swagger-ui'),
+    path('api/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
