@@ -37,6 +37,7 @@ class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
     """API для получения, обновления и удаления конкретного продукта.
 
     Позволяет получать, обновлять и удалять информацию о конкретном продукте.
+
     """
 
     queryset = Product.objects.all()
