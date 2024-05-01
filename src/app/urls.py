@@ -14,32 +14,28 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from rest_framework.permissions import IsAdminUser
+from rest_framework.authtoken.views import obtain_auth_token
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-from user.views import LoginView,LogoutView
+from user.views import LogoutView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/product/', include('product.urls')),
-    path('api/order/', include('order.urls')),
-    path('api/user/', include('user.urls')),
-
-    path('api/login/', LoginView.as_view()),
-    path('api/logout/', LogoutView.as_view()),
-
+    path("admin/", admin.site.urls),
+    path("api/product/", include("product.urls")),
+    path("api/order/", include("order.urls")),
+    path("api/user/", include("user.urls")),
+    path("api/login/", obtain_auth_token),
+    path("api/logout/", LogoutView.as_view()),
     # DRF
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-
+    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     # DRF-Spectacular
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     # path('api/', SpectacularSwaggerView.as_view(url_name='schema', permission_classes=[IsAdminUser]), name='swagger-ui'),
-    path('api/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-
+    path("api/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
