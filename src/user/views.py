@@ -1,10 +1,9 @@
 from rest_framework import generics, permissions, status
-from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from django.contrib.auth import authenticate, logout
-from drf_spectacular.utils import extend_schema
 from rest_framework.authtoken.models import Token
+from drf_spectacular.utils import extend_schema
+from django.contrib.auth import authenticate
 
 from .serializers import UserSerializer, LoginSerializer
 from .models import User
