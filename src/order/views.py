@@ -5,7 +5,7 @@ from .models import Order
 from .serializers import OrderSerializer
 
 
-@extend_schema(tags=['Order'])
+@extend_schema(tags=["Заказы"])
 class OrderListCreateAPIView(generics.ListCreateAPIView):
     """
     Возвращает набор данных заказов в зависимости от пользователя.
@@ -39,17 +39,17 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
         return serializer.save(user=user)
 
 
-@extend_schema(tags=['Order'])
+@extend_schema(tags=["Заказы"])
 class OrderUpdateAPIView(generics.UpdateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAdminUser]
-    lookup_field = 'pk'
+    lookup_field = "pk"
 
 
-@extend_schema(tags=['Order'])
+@extend_schema(tags=["Заказы"])
 class OrderDestroyAPIView(generics.DestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAdminUser]
-    lookup_field = 'pk'
+    lookup_field = "pk"

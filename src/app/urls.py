@@ -23,15 +23,16 @@ from django.conf.urls.static import static
 from rest_framework.authtoken.views import obtain_auth_token
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-from user.views import LogoutView
+from user.views import register_user, user_login, user_logout
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/product/", include("product.urls")),
     path("api/order/", include("order.urls")),
     path("api/user/", include("user.urls")),
-    path("api/login/", obtain_auth_token),
-    path("api/logout/", LogoutView.as_view()),
+    path("api/register/", register_user),
+    path("api/login/", user_login),
+    path("api/logout/", user_logout),
     # DRF
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     # DRF-Spectacular
