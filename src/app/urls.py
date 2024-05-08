@@ -34,7 +34,7 @@ urlpatterns = [
     path("api/login/", user_login),
     path("api/logout/", user_logout),
     # DRF
-    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    # path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     # DRF-Spectacular
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     # path('api/', SpectacularSwaggerView.as_view(url_name='schema', permission_classes=[IsAdminUser]), name='swagger-ui'),
