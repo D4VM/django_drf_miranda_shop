@@ -28,12 +28,13 @@ from user.views import register_user, user_login, user_logout
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/product/", include("product.urls")),
-    path("api/order/", include("order.urls")),
+    # path("api/order/", include("order.urls")),
     path("api/user/", include("user.urls")),
     path("api/promo/", include("promo.urls")),
     path("api/register/", register_user),
     path("api/login/", user_login),
     path("api/logout/", user_logout),
+    # path("api/cart/", include("cart.urls")),
     # DRF
     # path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     # DRF-Spectacular

@@ -67,8 +67,24 @@ def register_user(request):
     if request.method == "POST":
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            # Check if user with the provided username or email already exists
+            username = serializer.validated_data.get("username")
+            email = serializer.validated_data.get("email")
+            if (
+                User.objects.filter(username=username).exists()
+                or User.objects.filter(email=email).exists()
+            ):
+                return Response(
+                    {"error": "username or email already exists."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            user = serializer.save()
+
+            # Generate token for the newly registered user
+            token, _ = Token.objects.get_or_create(user=user)
+            response_data = {"user": serializer.data, "token": token.key}
+            return Response(response_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
