@@ -80,10 +80,18 @@ def register_user(request):
                 )
 
             user = serializer.save()
+            user.set_password(serializer.validated_data["password"])
+            user.save()
+
+            user_data = {
+                "id": user.id,
+                "username": user.username,
+                "admin": user.is_staff,
+            }
 
             # Generate token for the newly registered user
             token, _ = Token.objects.get_or_create(user=user)
-            response_data = {"user": serializer.data, "token": token.key}
+            response_data = {"user": user_data, "token": token.key}
             return Response(response_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -103,8 +111,15 @@ def user_login(request):
             user = authenticate(username=username, password=password)
 
         if user:
+            user_data = {
+                "id": user.id,
+                "username": user.username,
+                "admin": user.is_staff,
+            }
             token, _ = Token.objects.get_or_create(user=user)
-            response = Response({"token": token.key}, status=status.HTTP_200_OK)
+            response = Response(
+                {"user": user_data, "token": token.key}, status=status.HTTP_200_OK
+            )
             response.set_cookie("token", token.key)
             return response
 

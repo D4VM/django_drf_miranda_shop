@@ -32,7 +32,6 @@ MY_APPS = [
     "product",
     "user",
     "promo",
-    
 ]
 
 EXTERNAL_APPS = [
