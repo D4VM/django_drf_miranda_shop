@@ -11,6 +11,9 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=0)
     price = models.FloatField(default=0)
     discount = models.FloatField(default=0)
+    featured_image = models.ImageField(
+        upload_to="product_images/", blank=True, null=True
+    )
 
     size = models.CharField(max_length=50, blank=True, null=True)
     color = models.CharField(max_length=50, blank=True, null=True)
@@ -19,7 +22,7 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ('-created_at',)
+        ordering = ("-created_at",)
 
     def __str__(self):
         return self.title
@@ -31,7 +34,7 @@ class Product(models.Model):
 
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="images"
+    )
     image = models.ImageField(upload_to="product_images/", blank=True, null=True)
-
-
