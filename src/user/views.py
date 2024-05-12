@@ -70,6 +70,7 @@ def register_user(request):
             # Check if user with the provided username or email already exists
             username = serializer.validated_data.get("username")
             email = serializer.validated_data.get("email")
+            password = serializer.validated_data.get("password")
             if (
                 User.objects.filter(username=username).exists()
                 or User.objects.filter(email=email).exists()
@@ -80,7 +81,7 @@ def register_user(request):
                 )
 
             user = serializer.save()
-            user.set_password(serializer.validated_data["password"])
+            user.set_password(password)
             user.save()
 
             user_data = {
