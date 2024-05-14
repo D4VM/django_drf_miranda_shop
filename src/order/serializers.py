@@ -1,12 +1,6 @@
 from rest_framework import serializers
-from .models import Order, OrderItems
 from product.models import Product
-
-
-class ProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = ["id", "title", "price"]
+from .models import Order, OrderItems
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -16,13 +10,18 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItems
-        fields = ["product", "quantity", "price_per_item", "product_total_price"]
+        fields = [
+            "product",
+            "quantity",
+            "price_per_item",
+            "product_total_price",
+        ]
 
     def get_price_per_item(self, obj) -> int:
-        return obj.product.price
+        return obj.product.get_sale_price()
 
     def get_product_total_price(self, obj) -> float:
-        return obj.quantity * obj.product.price
+        return obj.quantity * obj.product.get_sale_price()
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -31,12 +30,19 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ["id", "created_at", "user", "order_total_price", "products"]
+        fields = [
+            "id",
+            "created_at",
+            "paid",
+            "user",
+            "order_total_price",
+            "products",
+        ]
 
     def get_order_total_price(self, obj) -> float:
         total_price = 0
         for item in obj.products.all():
-            total_price += item.product.price * item.quantity
+            total_price += item.product.get_sale_price() * item.quantity
         return total_price
 
     def create(self, validated_data):

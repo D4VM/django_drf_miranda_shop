@@ -5,8 +5,10 @@ from product.models import Product
 
 
 class Order(models.Model):
+    # TODO: status/paid/delivered bool fields.
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    paid = models.BooleanField(default=False)
 
     class Meta:
         ordering = ("-created_at",)
