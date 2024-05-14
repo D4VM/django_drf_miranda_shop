@@ -4,6 +4,9 @@ from drf_spectacular.utils import extend_schema
 from typing import Dict, List
 
 
+# TODO: Invoice Generation as PDF new endpoint for download.
+
+
 class InvoiceSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField(read_only=True)
     products = serializers.SerializerMethodField(read_only=True)
@@ -46,7 +49,6 @@ class InvoiceSerializer(serializers.ModelSerializer):
                 "discount": item.product.discount,
                 "sale_price": item.product.price,
                 "product_total_price": item.product.get_sale_price() * item.quantity,
-                # Add other fields as needed
             }
             serialized_products.append(serialized_product)
         return serialized_products

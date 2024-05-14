@@ -6,7 +6,7 @@ from .permisions import OrderPermissions
 
 from .invoice import InvoiceSerializer
 
-# TODO: Invoice Generation
+
 
 
 @extend_schema(tags=["Заказы"])

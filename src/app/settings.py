@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-=v#v=7^7pn&fw)_yueq=#15!l8t0o*t(lgzu!yx&yhl-k6()v="
+SECRET_KEY = "django-insecure-=v#v=7^7pn&fw)_yueq=#15!l8t0o*t(lgzu!yx&yhl-k6()v="  # TODO: change key if prod will happen
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -87,6 +87,8 @@ WSGI_APPLICATION = "app.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
+# TODO: change db do postgress and dockerize it
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -161,5 +163,5 @@ SPECTACULAR_SETTINGS = {
 
 # CORS Settings
 
-CORS_ALLOW_ALL_ORIGINS = True  # BAD!!! TODO: In Prod Change to False !!!
+CORS_ALLOW_ALL_ORIGINS = True  # TODO: In Prod Change to False !!!
 CORS_URLS_REGEX = r"^/api/.*$"
