@@ -1,0 +1,2 @@
+TODO: Dockerize back and front
+TODO: learn git
