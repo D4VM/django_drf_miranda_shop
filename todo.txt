@@ -1,3 +1,4 @@
+TODO: Make Indexes of DB models
 TODO: Dockerize back and front
 TODO: spin it up on prod env
 TODO: learn git

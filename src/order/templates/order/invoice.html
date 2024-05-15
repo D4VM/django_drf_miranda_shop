@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice # {{ order.id }}</title>
+    {% block layout_style %}
+    <style>
+        @page {
+            size: a4 portrait;
+            margin: 0cm;
+        }
+    </style>
+    {% endblock %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .invoice-details {
+            margin-bottom: 20px;
+        }
+        .invoice-details h2 {
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .invoice-details p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .order-table th, .order-table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        .order-table th {
+            background-color: #f2f2f2;
+        }
+        .footer {
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Invoice # {{ order.id }}</h1>
+        </div>
+        <div class="invoice-details">
+            <h2>შეკვეთის დეტალები</h2>
+            <p><strong>შეკვეთის ID:</strong> {{ order.id }}</p>
+            <p><strong>თარიღი:</strong> {{ order.created_at|slice:":10" }}</p>
+            <p><strong>სტატუსი:</strong> {% if order.paid %}გადახდილი{% else %}გადაუხდელი{% endif %}</p>
+            <h2>ჯამური ფასი: {{ order.order_total_price|floatformat:2 }} ლარი</h2>
+        </div>
+        <div class="invoice-details">
+            <h2>მომხმარებლის დეტალები</h2>
+            <p><strong>მომხმარებლის სახელი:</strong> {{ order.user.username }}</p>
+            <p><strong>ფოსტა:</strong> {{ order.user.email }}</p>
+            <p><strong>ქალაქი:</strong> {{ order.user.city }}</p>
+            <p><strong>მისამართი:</strong> {{ order.user.address }}</p>
+            <p><strong>ტელეფონი:</strong> {{ order.user.phone }}</p>
+        </div>
+
+         <div class="invoice-details">
+            <h2>მაღაზიის დეტალები</h2>
+            <p><strong>მაღაზიის სახელი:</strong> Miranda Shop</p>
+            <p><strong>საბანკო ანგარიში:</strong> TBC121112131241241241</p>
+        </div>
+
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>პროდუქტი</th>
+                    <th>ფასი</th>
+                    <th>რაოდ.</th>
+                    <th>ჯამი</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.products %}
+                <tr>
+                    <td>{{ item.title }}<br>ზომა: {{ item.size }}<br>ფერი: {{ item.color }}</td>
+                    <td><center>{{ item.price|floatformat:2 }} ლარი</center></td>
+                    <td><center>{{ item.quantity }}</center></td>
+                    <td><center>{{ item.product_total_price|floatformat:2 }} ლარი</center></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="footer">
+            <p>Thank you for your purchase!</p>
+        </div>
+    </div>
+</body>
+</html>

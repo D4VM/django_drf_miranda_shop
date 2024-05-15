@@ -1,5 +1,5 @@
 from .models import Order, OrderItems
-from rest_framework import serializers, generics
+from rest_framework import serializers, generics, views
 from drf_spectacular.utils import extend_schema
 from typing import Dict, List
 
@@ -68,3 +68,38 @@ class InvoiceRetrieveAPIView(generics.RetrieveAPIView):
 
 
 order_invoice = InvoiceRetrieveAPIView.as_view()
+
+
+from django.http import HttpResponse
+from rest_framework.views import APIView
+from django.template.loader import render_to_string
+
+from weasyprint import HTML
+
+
+class GenerateInvoiceAPIView(APIView):
+    # permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk):
+        # Fetch order data based on order_id
+        order = Order.objects.get(pk=pk)
+
+        # Serialize order data
+        serializer = InvoiceSerializer(order)
+
+        # Render HTML template with serialized data
+        html_string = render_to_string("order/invoice.html", {"order": serializer.data})
+
+        # Create PDF file from HTML string
+        html = HTML(string=html_string)
+        pdf_file = html.write_pdf()
+
+        # Prepare HTTP response with PDF content
+        response = HttpResponse(content_type="application/pdf")
+        response["Content-Disposition"] = 'filename="invoice.pdf"'
+        response.write(pdf_file)
+
+        return response
+
+
+download_invoice = GenerateInvoiceAPIView.as_view()
