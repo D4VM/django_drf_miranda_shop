@@ -45,10 +45,9 @@ class InvoiceSerializer(serializers.ModelSerializer):
                 "size": item.product.size,
                 "color": item.product.color,
                 "quantity": item.quantity,
-                "price": item.product.get_sale_price(),
-                "discount": item.product.discount,
+                "price": item.product.price,
                 "sale_price": item.product.price,
-                "product_total_price": item.product.get_sale_price() * item.quantity,
+                "product_total_price": item.product.price * item.quantity,
             }
             serialized_products.append(serialized_product)
         return serialized_products
@@ -56,7 +55,7 @@ class InvoiceSerializer(serializers.ModelSerializer):
     def get_order_total_price(self, obj) -> float:
         total_price = 0
         for item in obj.products.all():
-            total_price += item.product.get_sale_price() * item.quantity
+            total_price += item.product.price * item.quantity
         return round(total_price, 2)
 
 
@@ -77,6 +76,7 @@ from django.template.loader import render_to_string
 from weasyprint import HTML
 
 
+@extend_schema(tags=["Инвоис"], description="Выдаёт PDF")
 class GenerateInvoiceAPIView(APIView):
     # permission_classes = [IsAuthenticated]
 

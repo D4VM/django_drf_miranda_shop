@@ -18,10 +18,10 @@ class OrderItemSerializer(serializers.ModelSerializer):
         ]
 
     def get_price_per_item(self, obj) -> int:
-        return obj.product.get_sale_price()
+        return obj.product.price
 
     def get_product_total_price(self, obj) -> float:
-        return obj.quantity * obj.product.get_sale_price()
+        return obj.quantity * obj.product.price
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -42,7 +42,7 @@ class OrderSerializer(serializers.ModelSerializer):
     def get_order_total_price(self, obj) -> float:
         total_price = 0
         for item in obj.products.all():
-            total_price += item.product.get_sale_price() * item.quantity
+            total_price += item.product.price * item.quantity
         return total_price
 
     def create(self, validated_data):

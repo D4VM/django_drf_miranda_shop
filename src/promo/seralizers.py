@@ -25,8 +25,6 @@ class PromoSerializer(serializers.ModelSerializer):
             "barcode": obj.product.barcode,
             "stock": obj.product.stock,
             "price": obj.product.price,
-            "discount": obj.product.discount,
-            "sale_price": obj.product.get_sale_price(),
             "size": obj.product.size,
             "color": obj.product.color,
         }

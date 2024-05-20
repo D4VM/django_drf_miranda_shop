@@ -8,7 +8,6 @@ from product.models import Product, ProductImage
 
 class ProductSerializer(ModelSerializer):
     images = SerializerMethodField()
-    sale_price = FloatField(source="get_sale_price", read_only=True)
 
     class Meta:
         model = Product
@@ -22,11 +21,8 @@ class ProductSerializer(ModelSerializer):
             "barcode",
             "stock",
             "price",
-            "discount",
-            "sale_price",
             "size",
             "color",
-            "featured_image",
             "images",
         )
 

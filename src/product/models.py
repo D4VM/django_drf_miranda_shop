@@ -10,10 +10,6 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     stock = models.PositiveIntegerField(default=0)
     price = models.FloatField(default=0)
-    discount = models.FloatField(default=0)
-    featured_image = models.ImageField(
-        upload_to="product_images/", blank=True, null=True
-    )
 
     size = models.CharField(max_length=50, blank=True, null=True)
     color = models.CharField(max_length=50, blank=True, null=True)
@@ -26,11 +22,6 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
-
-    def get_sale_price(self) -> float:
-        if not self.discount:
-            return self.price
-        return round(self.price - (self.price * self.discount) / 100, 2)
 
 
 class ProductImage(models.Model):
